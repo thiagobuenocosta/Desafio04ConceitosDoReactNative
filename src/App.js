@@ -6,7 +6,10 @@ export default function App() {
   const [repositories, setRepositories] = useState([]);
 
   async function handleLikeRepository(id) {
-    
+    const response = await likeRepositorie(id);
+    const repositorie = repositories.find(repositories => repositories.id === id);
+    repositorie.likes = response.data.likes;
+    setRepositories([...repositories.filter(repositorie => repositorie.id !== id), repositorie]) 
   }
 
   useEffect(() => {
@@ -38,7 +41,7 @@ export default function App() {
               <View style={styles.likesContainer}>
                 <Text
                   style={styles.likeText}
-                  testID={`repository-likes-1`}
+                  testID={`repository-likes-${repositorie.id}`}
                 >
                   {repositorie.likes} curtidas
                 </Text>
@@ -47,7 +50,7 @@ export default function App() {
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => handleLikeRepository(repositorie.id)}
-                testID={`like-button-1`}
+                testID={`like-button-${repositorie.id}`}
               >
                 <Text style={styles.buttonText}>Curtir</Text>
               </TouchableOpacity>
